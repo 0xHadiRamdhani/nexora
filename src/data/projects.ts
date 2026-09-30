@@ -1,0 +1,58 @@
+import { Project } from '@/types';
+
+export const projects: Project[] = [
+  {
+    id: 'workshop_manager',
+    name: 'workshop_manager',
+    category: 'Mobile Application',
+    description: 'A mobile application built with Dart for managing workshop operations and tracking tasks effectively.',
+    technologies: ['Dart', 'Flutter'],
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/workshop_manager',
+  },
+  {
+    id: 'CodeCraftersNewVersion',
+    name: 'CodeCraftersNewVersion',
+    category: 'Mobile Application',
+    description: 'An updated version of the CodeCrafters platform, developed using Dart to deliver a seamless mobile experience.',
+    technologies: ['Dart', 'Flutter'],
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/CodeCraftersNewVersion',
+  },
+  {
+    id: 'sbm-ticketing-app',
+    name: 'sbm-ticketing-app',
+    category: 'Mobile Application',
+    description: 'A ticketing application designed for streamlined booking and event management on mobile devices.',
+    technologies: ['Dart', 'Flutter'],
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/sbm-ticketing-app',
+  },
+  {
+    id: 'imphnen-tools-mobile',
+    name: 'imphnen-tools-mobile',
+    category: 'Mobile Application',
+    description: 'A comprehensive suite of mobile tools offering utility features for everyday tasks.',
+    technologies: ['Dart', 'Flutter'],
+    image: 'https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/imphnen-tools-mobile',
+  },
+  {
+    id: 'imphnen-online-tools',
+    name: 'imphnen-online-tools',
+    category: 'Web Application',
+    description: 'A collection of online web utilities and tools developed with modern web technologies.',
+    technologies: ['TypeScript', 'React', 'Next.js'],
+    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/imphnen-online-tools',
+  },
+  {
+    id: 'Ai-Manuver-Scanner',
+    name: 'Ai-Manuver-Scanner',
+    category: 'iOS Application',
+    description: 'An AI-powered scanner application natively built for iOS devices using Swift.',
+    technologies: ['Swift', 'iOS', 'AI'],
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop',
+    link: 'https://github.com/0xHadiRamdhani/Ai-Manuver-Scanner',
+  },
+];

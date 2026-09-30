@@ -1,0 +1,17 @@
+export const technologies = [
+  'Next.js',
+  'React',
+  'TypeScript',
+  'Tailwind CSS',
+  'Flutter',
+  'Node.js',
+  'PostgreSQL',
+  'Firebase',
+  'Supabase',
+  'Git',
+  'REST API',
+  'GraphQL',
+  'Docker',
+  'AWS',
+  'Figma',
+];
