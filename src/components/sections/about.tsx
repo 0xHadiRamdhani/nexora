@@ -62,7 +62,7 @@ export function About() {
                   <div className="flex-1 flex flex-col justify-center p-6 text-[12px] sm:text-[13px] font-mono leading-relaxed text-left overflow-hidden">
                     <div>
                       <span className="text-[#c678dd]">import</span>{' '}
-                      <span className="text-[#98c379]">'package:flutter/material.dart'</span><span className="text-zinc-300">;</span>
+                      <span className="text-[#98c379]">&apos;package:flutter/material.dart&apos;</span><span className="text-zinc-300">;</span>
                     </div>
                     <div className="mt-3">
                       <span className="text-[#c678dd]">class</span>{' '}

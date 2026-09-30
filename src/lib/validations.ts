@@ -13,7 +13,7 @@ export const contactFormSchema = z.object({
     'Custom Software',
     'Other'
   ], {
-    required_error: 'Please select a project type.',
+    message: 'Please select a project type.',
   }),
   budget: z.enum([
     'Under $500',
@@ -22,7 +22,7 @@ export const contactFormSchema = z.object({
     '$5,000+',
     'Not sure yet'
   ], {
-    required_error: 'Please select a budget range.',
+    message: 'Please select a budget range.',
   }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
 });
