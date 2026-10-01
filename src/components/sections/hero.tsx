@@ -61,16 +61,19 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="pt-20 md:pt-28 pb-10 flex flex-row items-center justify-center gap-4 sm:gap-8 md:gap-16 w-full max-w-5xl mx-auto px-2 sm:px-4"
+          className="pt-20 md:pt-28 pb-10 flex flex-row items-center justify-center gap-3 sm:gap-6 md:gap-10 w-full max-w-6xl mx-auto px-2 sm:px-4"
         >
           <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/hadi.PNG" alt="Hadi" fill sizes="(max-width: 768px) 33vw, 300px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
+            <Image src="/images/founders/hadi.PNG" alt="Hadi" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
           </div>
           <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/keysha.PNG" alt="Keysha" fill sizes="(max-width: 768px) 33vw, 300px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
+            <Image src="/images/founders/keysha.PNG" alt="Keysha" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
           </div>
           <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/aris.JPG" alt="Aris" fill sizes="(max-width: 768px) 33vw, 300px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
+            <Image src="/images/founders/aris.JPG" alt="Aris" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
+          </div>
+          <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
+            <Image src="/images/founders/akbar.png" alt="Akbar" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
           </div>
         </motion.div>
       </Container>
