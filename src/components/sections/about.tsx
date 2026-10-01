@@ -4,8 +4,10 @@ import * as React from 'react';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/components/layout/language-provider';
 
 export function About() {
+  const { t } = useLanguage();
   return (
     <section id="about" className="py-24 bg-background">
       <Container>
@@ -18,19 +20,14 @@ export function About() {
             className="space-y-6"
           >
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              We Turn Ideas Into Digital Products.
+              {t.about.title}
             </h2>
             <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-              <p>
-                NexoraLabStudio is a digital product development studio focused on creating modern, scalable and meaningful digital experiences.
-              </p>
-              <p>
-                We help startups, established businesses, organizations, and individuals transform their ideas into functional products that users love and businesses can scale. 
-                Our approach combines rigorous engineering with thoughtful design.
-              </p>
+              <p>{t.about.p1}</p>
+              <p>{t.about.p2}</p>
             </div>
             <div className="pt-4">
-              <Button variant="outline" size="lg">Learn More About Us</Button>
+              <Button variant="outline" size="lg">{t.about.cta}</Button>
             </div>
           </motion.div>
 

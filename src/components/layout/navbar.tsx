@@ -8,21 +8,14 @@ import { Menu, X, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
-
-const links = [
-  { name: 'Home', href: '#home' },
-  { name: 'Services', href: '#services' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Process', href: '#process' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
-];
+import { useLanguage } from '@/components/layout/language-provider';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { theme, setTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   React.useEffect(() => {
     window.requestAnimationFrame(() => setMounted(true));
@@ -33,21 +26,26 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const links = [
+    { name: t.nav.home, href: '#home' },
+    { name: t.nav.services, href: '#services' },
+    { name: t.nav.projects, href: '#projects' },
+    { name: t.nav.process, href: '#process' },
+    { name: t.nav.about, href: '#about' },
+    { name: t.nav.contact, href: '#contact' },
+  ];
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      const offset = 80; // Navbar height offset
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
@@ -80,7 +78,36 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2">
+            {/* Language Switcher */}
+            {mounted && (
+              <div className="flex items-center gap-1 border border-border rounded-full p-1 bg-background/50 backdrop-blur-sm">
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-semibold rounded-full transition-all duration-200',
+                    language === 'en'
+                      ? 'bg-foreground text-background shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLanguage('id')}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-semibold rounded-full transition-all duration-200',
+                    language === 'id'
+                      ? 'bg-foreground text-background shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  ID
+                </button>
+              </div>
+            )}
+
+            {/* Dark Mode Toggle */}
             {mounted && (
               <Button
                 variant="ghost"
@@ -93,12 +120,36 @@ export function Navbar() {
               </Button>
             )}
             <Button asChild variant="premium">
-              <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Start a Project</a>
+              <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>{t.nav.startProject}</a>
             </Button>
           </div>
 
           {/* Mobile Toggle */}
-          <div className="flex md:hidden items-center gap-4">
+          <div className="flex md:hidden items-center gap-2">
+            {/* Language Switcher Mobile */}
+            {mounted && (
+              <div className="flex items-center gap-0.5 border border-border rounded-full p-0.5 bg-background/50">
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={cn(
+                    'px-2 py-0.5 text-xs font-semibold rounded-full transition-all duration-200',
+                    language === 'en' ? 'bg-foreground text-background' : 'text-muted-foreground'
+                  )}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLanguage('id')}
+                  className={cn(
+                    'px-2 py-0.5 text-xs font-semibold rounded-full transition-all duration-200',
+                    language === 'id' ? 'bg-foreground text-background' : 'text-muted-foreground'
+                  )}
+                >
+                  ID
+                </button>
+              </div>
+            )}
+
             {mounted && (
               <Button
                 variant="ghost"
@@ -144,7 +195,7 @@ export function Navbar() {
                 </a>
               ))}
               <Button asChild variant="premium" className="mt-4 w-full">
-                <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Start a Project</a>
+                <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>{t.nav.startProject}</a>
               </Button>
             </nav>
           </motion.div>

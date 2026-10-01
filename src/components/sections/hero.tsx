@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
+import { useLanguage } from '@/components/layout/language-provider';
 
 export function Hero() {
+  const { t } = useLanguage();
   return (
     <section id="home" className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden">
       {/* Background Elements */}
@@ -27,18 +29,18 @@ export function Hero() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-sm text-sm text-muted-foreground mb-4"
           >
             <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
-            From idea to launch — we build, ship, and scale digital products.
+            {t.hero.badge}
           </motion.div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground">
-            We Build Digital Products <br className="hidden md:block" />
+            {t.hero.title1} <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/50">
-              That Matter.
+              {t.hero.title2}
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            NexoraLabStudio helps businesses turn ideas into powerful Android apps, iOS apps, websites, and custom digital products.
+            {t.hero.description}
           </p>
 
           <motion.div
@@ -48,33 +50,12 @@ export function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
             <Button size="lg" variant="premium" className="w-full sm:w-auto" asChild>
-              <a href="#contact">Start a Project</a>
+              <a href="#contact">{t.hero.cta}</a>
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto bg-background/50 backdrop-blur-sm" asChild>
-              <a href="#projects">Explore Our Work</a>
+              <a href="#projects">{t.hero.explore}</a>
             </Button>
           </motion.div>
-        </motion.div>
-
-        {/* Founders Avatars */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="pt-20 md:pt-28 pb-10 flex flex-row items-center justify-center gap-3 sm:gap-6 md:gap-10 w-full max-w-6xl mx-auto px-2 sm:px-4"
-        >
-          <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/hadi.PNG" alt="Hadi" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
-          </div>
-          <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/keysha.PNG" alt="Keysha" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
-          </div>
-          <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/aris.JPG" alt="Aris" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
-          </div>
-          <div className="relative flex-1 max-w-[280px] aspect-[2/3] transition-transform hover:-translate-y-2 duration-300">
-            <Image src="/images/founders/akbar.png" alt="Akbar" fill sizes="(max-width: 768px) 25vw, 280px" priority className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl" />
-          </div>
         </motion.div>
       </Container>
     </section>

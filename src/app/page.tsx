@@ -5,6 +5,7 @@ import { WhyUs } from '@/components/sections/why-us';
 import { Process } from '@/components/sections/process';
 import { Technologies } from '@/components/sections/technologies';
 import { About } from '@/components/sections/about';
+import { Team } from '@/components/sections/team';
 import { CTA } from '@/components/sections/cta';
 import { Contact } from '@/components/sections/contact';
 
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <Team />
       <Services />
       <Projects />
       <WhyUs />
