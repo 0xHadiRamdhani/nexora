@@ -22,15 +22,7 @@ export function Hero() {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="max-w-4xl mx-auto space-y-8"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-sm text-sm text-muted-foreground mb-4"
-          >
-            <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
-            {t.hero.badge}
-          </motion.div>
+
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground">
             {t.hero.title1} <br className="hidden md:block" />

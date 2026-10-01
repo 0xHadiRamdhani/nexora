@@ -194,9 +194,6 @@ export function Navbar() {
                   {link.name}
                 </a>
               ))}
-              <Button asChild variant="premium" className="mt-4 w-full">
-                <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>{t.nav.startProject}</a>
-              </Button>
             </nav>
           </motion.div>
         )}
