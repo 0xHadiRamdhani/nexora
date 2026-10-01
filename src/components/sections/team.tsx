@@ -23,15 +23,7 @@ export function Team() {
       
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-sm text-accent mb-2"
-          >
-            <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
-            {t.team.badge}
-          </motion.div>
+
           
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
