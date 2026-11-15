@@ -1,200 +1,182 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 import { Menu, X, Moon, Sun } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/utils';
+import { CtaLink } from '@/components/motion/hover';
 import { useLanguage } from '@/components/layout/language-provider';
+import type { Language } from '@/lib/translations';
+
+function LanguageSwitch({ className }: { className?: string }) {
+  const { language, setLanguage } = useLanguage();
+  return (
+    <div role="group" aria-label="Language" className={cn('flex items-center rounded-full border border-border p-0.5', className)}>
+      {(['id', 'en'] as Language[]).map((lang) => (
+        <button
+          key={lang}
+          type="button"
+          onClick={() => setLanguage(lang)}
+          aria-pressed={language === lang}
+          className={cn(
+            'relative rounded-full px-2.5 py-1 text-xs font-bold uppercase transition-colors',
+            language === lang ? 'text-background' : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          {language === lang && (
+            <motion.span
+              layoutId={`lang-pill-${className ?? ''}`}
+              className="absolute inset-0 rounded-full bg-foreground"
+              transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+            />
+          )}
+          <span className="relative">{lang}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ThemeToggle({ label }: { label: string }) {
+  const { resolvedTheme, setTheme } = useTheme();
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      aria-label={label}
+      className="group grid size-10 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+    >
+      <Sun className="size-[18px] transition-transform duration-500 group-hover:rotate-90 dark:hidden" />
+      <Moon className="hidden size-[18px] transition-transform duration-500 group-hover:-rotate-[20deg] dark:block" />
+    </button>
+  );
+}
+
+const subscribeNoop = () => () => {};
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = React.useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const { theme, setTheme, systemTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
+  const [scrolled, setScrolled] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [hovered, setHovered] = React.useState<string | null>(null);
+  // true only on the client, so theme/language controls never mismatch SSR
+  const mounted = React.useSyncExternalStore(subscribeNoop, () => true, () => false);
+
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
+  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 12));
 
   React.useEffect(() => {
-    window.requestAnimationFrame(() => setMounted(true));
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
 
   const links = [
-    { name: t.nav.home, href: '#home' },
     { name: t.nav.services, href: '#services' },
-    { name: t.nav.projects, href: '#projects' },
+    { name: t.nav.work, href: '#work' },
     { name: t.nav.process, href: '#process' },
-    { name: t.nav.about, href: '#about' },
-    { name: t.nav.contact, href: '#contact' },
+    { name: t.nav.team, href: '#team' },
+    { name: t.nav.faq, href: '#faq' },
   ];
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
 
   return (
     <header
       className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300',
-        isScrolled
-          ? 'bg-background/80 backdrop-blur-md border-b border-border shadow-sm'
-          : 'bg-transparent'
+        'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300',
+        scrolled || open ? 'border-b border-border bg-background/85 backdrop-blur-md' : 'border-b border-transparent'
       )}
     >
       <Container>
-        <div className="flex items-center justify-between h-20">
-          <Link href="#home" onClick={(e) => handleNavClick(e, '#home')} className="flex items-center gap-2">
-            <span className="font-bold text-xl tracking-tight">NexoraLabStudio</span>
-          </Link>
+        <div className="flex h-16 items-center justify-between gap-4">
+          <a href="#home" className="group text-lg font-extrabold tracking-tight" onClick={() => setOpen(false)}>
+            Nexora
+            <span className="inline-block text-brand transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:-rotate-6">Lab</span>
+            Studio
+          </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-6">
+          {/* A single pill slides between links on hover instead of each link lighting up on its own */}
+          <nav className="hidden items-center md:flex" aria-label="Main" onPointerLeave={() => setHovered(null)}>
             {links.map((link) => (
               <a
-                key={link.name}
+                key={link.href}
                 href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                onPointerEnter={() => setHovered(link.href)}
+                onFocus={() => setHovered(link.href)}
+                onBlur={() => setHovered(null)}
+                className="relative rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
               >
-                {link.name}
+                {hovered === link.href && (
+                  <motion.span
+                    layoutId="nav-hover"
+                    className="absolute inset-0 rounded-full bg-muted"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative">{link.name}</span>
               </a>
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-2">
-            {/* Language Switcher */}
-            {mounted && (
-              <div className="flex items-center gap-1 border border-border rounded-full p-1 bg-background/50 backdrop-blur-sm">
-                <button
-                  onClick={() => setLanguage('en')}
-                  className={cn(
-                    'px-2.5 py-1 text-xs font-semibold rounded-full transition-all duration-200',
-                    language === 'en'
-                      ? 'bg-foreground text-background shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  EN
-                </button>
-                <button
-                  onClick={() => setLanguage('id')}
-                  className={cn(
-                    'px-2.5 py-1 text-xs font-semibold rounded-full transition-all duration-200',
-                    language === 'id'
-                      ? 'bg-foreground text-background shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  ID
-                </button>
-              </div>
-            )}
-
-            {/* Dark Mode Toggle */}
-            {mounted && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === 'dark' || (theme === 'system' && systemTheme === 'dark') ? 'light' : 'dark')}
-                aria-label="Toggle theme"
-              >
-                <Sun className="h-5 w-5 dark:hidden" />
-                <Moon className="h-5 w-5 hidden dark:block" />
-              </Button>
-            )}
-            <Button asChild variant="premium">
-              <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>{t.nav.startProject}</a>
-            </Button>
+          <div className="hidden items-center gap-2 md:flex">
+            {mounted && <LanguageSwitch className="desktop" />}
+            {mounted && <ThemeToggle label={t.nav.toggleTheme} />}
+            <CtaLink href="#contact" size="md">
+              {t.nav.startProject}
+            </CtaLink>
           </div>
 
-          {/* Mobile Toggle */}
-          <div className="flex md:hidden items-center gap-2">
-            {/* Language Switcher Mobile */}
-            {mounted && (
-              <div className="flex items-center gap-0.5 border border-border rounded-full p-0.5 bg-background/50">
-                <button
-                  onClick={() => setLanguage('en')}
-                  className={cn(
-                    'px-2 py-0.5 text-xs font-semibold rounded-full transition-all duration-200',
-                    language === 'en' ? 'bg-foreground text-background' : 'text-muted-foreground'
-                  )}
-                >
-                  EN
-                </button>
-                <button
-                  onClick={() => setLanguage('id')}
-                  className={cn(
-                    'px-2 py-0.5 text-xs font-semibold rounded-full transition-all duration-200',
-                    language === 'id' ? 'bg-foreground text-background' : 'text-muted-foreground'
-                  )}
-                >
-                  ID
-                </button>
-              </div>
-            )}
-
-            {mounted && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                aria-label="Toggle theme"
-              >
-                <Sun className="h-5 w-5 dark:hidden" />
-                <Moon className="h-5 w-5 hidden dark:block" />
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
+          <div className="flex items-center gap-1 md:hidden">
+            {mounted && <ThemeToggle label={t.nav.toggleTheme} />}
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+              className="grid size-10 place-items-center rounded-full hover:bg-muted"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
           </div>
         </div>
       </Container>
 
-      {/* Mobile Menu */}
+      <motion.div style={{ scaleX: progress }} className="absolute inset-x-0 bottom-[-1px] h-0.5 origin-left bg-brand" aria-hidden />
+
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden bg-background border-b border-border overflow-hidden"
+            id="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden md:hidden"
           >
-            <nav className="flex flex-col px-4 py-6 gap-4">
-              {links.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-lg font-medium text-foreground py-2 border-b border-border/50"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </nav>
+            <Container className="pb-6 pt-2">
+              <nav className="flex flex-col" aria-label="Mobile">
+                {[...links, { name: t.nav.contact, href: '#contact' }].map((link, i) => (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 * i }}
+                    className="border-b border-border py-3.5 text-lg font-semibold"
+                  >
+                    {link.name}
+                  </motion.a>
+                ))}
+              </nav>
+              <div className="mt-5 flex items-center justify-between">
+                {mounted && <LanguageSwitch className="mobile" />}
+              </div>
+            </Container>
           </motion.div>
         )}
       </AnimatePresence>

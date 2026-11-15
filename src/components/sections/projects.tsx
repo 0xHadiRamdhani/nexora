@@ -2,84 +2,167 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/ui/container';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { useLanguage } from '@/components/layout/language-provider';
 import { projects } from '@/data/projects';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import type { Project } from '@/types';
+import { SectionSwarm } from '@/components/motion/section-swarm';
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const { t, language } = useLanguage();
+  const reduce = useReducedMotion();
+  const [hover, setHover] = React.useState(false);
+  // "View code" bubble trails the cursor across the image
+  const cx = useSpring(0, { stiffness: 350, damping: 28, mass: 0.5 });
+  const cy = useSpring(0, { stiffness: 350, damping: 28, mass: 0.5 });
+
+  const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse') return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    if (!hover) {
+      cx.jump(x);
+      cy.jump(y);
+      setHover(true);
+    } else {
+      cx.set(x);
+      cy.set(y);
+    }
+  };
+
+  return (
+    <a
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex w-full shrink-0 flex-col md:w-[440px] lg:w-[480px]"
+    >
+      <div
+        onPointerMove={onMove}
+        onPointerLeave={() => setHover(false)}
+        className={`relative aspect-[4/3] overflow-hidden rounded-xl bg-muted ${reduce ? '' : 'md:cursor-none'}`}
+      >
+        <Image
+          src={project.image}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 100vw, 480px"
+          className="object-cover transition-[transform,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06] group-hover:saturate-[1.15]"
+        />
+        <span className="absolute left-4 top-4 rounded-md bg-background/90 px-2.5 py-1 text-xs font-bold text-foreground">
+          {t.work.categories[project.category]}
+        </span>
+        {/* darkens from the bottom so the bubble always reads */}
+        <span aria-hidden className="absolute inset-0 bg-linear-to-t from-navy/50 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <AnimatePresence>
+          {hover && !reduce && (
+            <motion.span
+              aria-hidden
+              style={{ x: cx, y: cy }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              className="pointer-events-none absolute left-0 top-0 -ml-12 -mt-12 grid size-24 place-items-center rounded-full bg-accent text-center text-xs font-bold leading-tight text-accent-foreground"
+            >
+              <span className="flex flex-col items-center gap-0.5">
+                <ArrowUpRight className="size-5" />
+                {t.work.viewCode}
+              </span>
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {/* keyboard users get a static badge instead of the cursor bubble */}
+        <span className="absolute bottom-4 right-4 hidden size-11 place-items-center rounded-full bg-accent text-accent-foreground group-focus-visible:grid">
+          <ArrowUpRight className="size-5" aria-hidden />
+        </span>
+      </div>
+      <div className="mt-5 flex items-baseline gap-3">
+        <span className="text-sm font-bold tabular-nums text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
+        <h3 className="text-xl font-extrabold tracking-tight">
+          <span className="link-sweep pb-0.5 transition-colors group-hover:bg-[length:100%_1.5px] group-hover:text-brand">{project.name}</span>
+        </h3>
+      </div>
+      <p className="mt-2 leading-relaxed text-muted-foreground">{project.description[language]}</p>
+      <p className="mt-3 text-sm font-semibold">
+        {project.technologies.join(' · ')}
+        <span className="sr-only"> — {t.work.viewCode}</span>
+      </p>
+    </a>
+  );
+}
+
+/** Desktop: vertical scroll drives a horizontal track while the section is pinned. */
+function HorizontalTrack() {
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    const measure = () => {
+      if (!trackRef.current) return;
+      setDistance(Math.max(0, trackRef.current.scrollWidth - window.innerWidth));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener('resize', measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
+  const raw = useTransform(scrollYProgress, [0, 1], [0, -distance]);
+  const x = useSpring(raw, { stiffness: 120, damping: 30, mass: 0.4 });
+  const bar = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
+  return (
+    <div ref={sectionRef} className="relative hidden md:block" style={{ height: `calc(100vh + ${distance}px)` }}>
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-8 px-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} />
+          ))}
+        </motion.div>
+        <Container className="mt-10">
+          <div className="h-0.5 w-full overflow-hidden rounded-full bg-border">
+            <motion.div style={{ width: bar }} className="h-full bg-brand" />
+          </div>
+        </Container>
+      </div>
+    </div>
+  );
+}
 
 export function Projects() {
+  const { t } = useLanguage();
   return (
-    <section id="projects" className="py-24 bg-background">
+    <section id="work" className="relative isolate border-y border-border bg-surface pt-24 lg:pt-32">
+      <SectionSwarm shape="code" className="absolute right-[3%] top-12 -z-10 hidden h-[260px] w-[380px] lg:block" />
       <Container>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-          <div className="space-y-4 max-w-2xl">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">Selected Work</h2>
-            <p className="text-lg text-muted-foreground">
-              A glimpse of what we can build. We deliver scalable, high-performance applications.
-            </p>
-          </div>
-          <Button variant="outline" className="w-full md:w-auto" asChild>
-            <a href="https://github.com/0xHadiRamdhani" target="_blank" rel="noopener noreferrer">View All Projects</a>
-          </Button>
-        </div>
+        <SectionHeading label={t.work.label} title={t.work.title} description={t.work.description} />
+      </Container>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="group relative flex flex-col gap-4"
-            >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-secondary border border-border/50">
-                {/* Fallback pattern if image is missing */}
-                <div className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center opacity-50" />
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-accent/20" />
-                
-                {/* Project Image */}
-                {project.image && (
-                  <Image 
-                    src={project.image} 
-                    alt={project.name} 
-                    fill 
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                )}
-                
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Button variant="premium" className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300" asChild>
-                    <a href={project.link} target="_blank" rel="noopener noreferrer">
-                      View Project <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
+      <HorizontalTrack />
 
-              <div className="space-y-2 pt-2">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-xl font-semibold">{project.name}</h3>
-                  <Badge variant="secondary" className="font-normal text-xs">{project.category}</Badge>
-                </div>
-                <p className="text-muted-foreground text-sm line-clamp-2">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {project.technologies.map(tech => (
-                    <span key={tech} className="text-xs font-medium text-foreground bg-secondary px-2 py-1 rounded-md">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+      <Container className="grid gap-12 py-14 md:hidden">
+        {projects.map((p, i) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <ProjectCard project={p} index={i} />
+          </motion.div>
+        ))}
       </Container>
     </section>
   );

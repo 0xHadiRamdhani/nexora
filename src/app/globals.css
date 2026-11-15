@@ -1,112 +1,123 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Palette comes from the Nexora Labs ID cards: deep navy wordmark,
+  electric blue, and a cyan highlight. Cyan is the accent and is kept
+  for the moments that need it (primary CTA, active states).
+*/
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-surface: var(--surface);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-navy: #0a1b4d;
 
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
+  /* legacy aliases used by the form primitives */
+  --color-card: var(--surface);
+  --color-secondary: var(--muted);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #09090b;
-  
-  --primary: #09090b;
-  --primary-foreground: #fafafa;
-  
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
-  
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  
-  --border: #e4e4e7;
-  
-  --card: #ffffff;
-  --card-foreground: #09090b;
-  
-  --accent: #2563eb; /* Modern Blue */
-  --accent-foreground: #ffffff;
+  --background: #f4f6fb;
+  --foreground: #0a1b4d;
+  --surface: #ffffff;
+  --muted: #e6eaf4;
+  --muted-foreground: #4a5578;
+  --border: #d5dbea;
+  --brand: #1653f0;
+  --brand-foreground: #ffffff;
+  --accent: #14c8d4;
+  --accent-foreground: #04122f;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  
-  --primary: #fafafa;
-  --primary-foreground: #09090b;
-  
-  --secondary: #27272a;
-  --secondary-foreground: #fafafa;
-  
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  
-  --border: #27272a;
-  
-  --card: #09090b;
-  --card-foreground: #fafafa;
-  
-  --accent: #3b82f6; /* Lighter Blue for Dark Mode */
-  --accent-foreground: #ffffff;
+  --background: #050b1f;
+  --foreground: #eef2ff;
+  --surface: #0b1530;
+  --muted: #13204a;
+  --muted-foreground: #9aa6c8;
+  --border: #1d2b57;
+  --brand: #4d7dff;
+  --brand-foreground: #04122f;
+  --accent: #2fdde6;
+  --accent-foreground: #04122f;
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  html {
+    scroll-padding-top: 5rem;
+  }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-accent/30;
+    @apply bg-background text-foreground antialiased selection:bg-accent/40;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/30 rounded-full border-[3px] border-solid border-background;
-}
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/50;
-}
-
-/* Animations */
-@keyframes grid {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(calc(50px * 2)); }
-}
-
-.animate-grid {
-  animation: grid 15s linear infinite;
-}
-
-.glass {
-  @apply bg-background/60 backdrop-blur-md border border-border/50;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
   }
 }
 
+/*
+  Hero entrance runs in CSS, not JS, so the headline (the LCP element)
+  animates straight from the server-rendered HTML without waiting for hydration.
+*/
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 100ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise {
+    animation: none;
+  }
+}
+
+/* Underline that draws in from the left on hover */
+.link-sweep {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+}
+@media (hover: hover) {
+  .link-sweep:hover {
+    background-size: 100% 1.5px;
+  }
+}
+
+/* Cursor spotlight for cards; --mx/--my come from useSpotlight() */
+.spotlight {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--spot, color-mix(in oklab, var(--brand) 12%, transparent)), transparent 60%);
+}

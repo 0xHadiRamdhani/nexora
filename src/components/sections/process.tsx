@@ -1,92 +1,86 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Container } from '@/components/ui/container';
-
-const steps = [
-  {
-    num: '01',
-    title: 'Discover',
-    description: 'Understand your business, users, goals and requirements deeply before writing a single line of code.',
-  },
-  {
-    num: '02',
-    title: 'Design',
-    description: 'Create user flows, wireframes and high-fidelity interfaces that look beautiful and are easy to use.',
-  },
-  {
-    num: '03',
-    title: 'Develop',
-    description: 'Build the product using modern technologies, clean code, and scalable architecture.',
-  },
-  {
-    num: '04',
-    title: 'Test',
-    description: 'Rigorously test functionality, performance, responsiveness, and usability across devices.',
-  },
-  {
-    num: '05',
-    title: 'Launch',
-    description: 'Deploy the product securely and provide ongoing support to ensure long-term success.',
-  },
-];
+import { SectionHeading } from '@/components/ui/section-heading';
+import { useLanguage } from '@/components/layout/language-provider';
+import { cn } from '@/lib/utils';
+import { SectionSwarm } from '@/components/motion/section-swarm';
 
 export function Process() {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"]
-  });
-
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const { t } = useLanguage();
+  const p = t.process;
+  const [active, setActive] = React.useState(0);
+  const listRef = React.useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 60%', 'end 60%'] });
 
   return (
-    <section id="process" className="py-24 bg-background relative overflow-hidden">
-      <Container>
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">From Idea to Launch</h2>
-          <p className="text-lg text-muted-foreground">
-            Our battle-tested development process ensures we deliver high-quality products on time.
-          </p>
+    <section id="process" className="relative isolate py-24 lg:py-32">
+      <Container className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <SectionHeading label={p.label} title={p.title} description={p.description} />
+
+          {/* Large step counter, desktop only: the list carries the numbers on mobile */}
+          <div className="relative mt-12 hidden items-end gap-4 lg:flex" aria-hidden>
+            <SectionSwarm shape="rocket" className="absolute bottom-0 right-0 -z-10 size-[160px]" />
+            <div className="relative h-[9rem] w-[11rem] overflow-hidden">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={active}
+                  initial={{ y: '100%' }}
+                  animate={{ y: 0 }}
+                  exit={{ y: '-100%' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 32 }}
+                  className="absolute inset-0 text-[9rem] font-extrabold leading-none tracking-tighter text-brand tabular-nums"
+                >
+                  0{active + 1}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+            <span className="pb-4 text-2xl font-bold text-muted-foreground">/ 0{p.steps.length}</span>
+          </div>
         </div>
 
-        <div ref={containerRef} className="relative max-w-3xl mx-auto">
-          {/* Animated Progress Line */}
-          <div className="absolute left-[27px] top-0 bottom-0 w-[2px] bg-border/50 hidden md:block">
-            <motion.div 
-              className="absolute top-0 w-full bg-accent"
-              style={{ height: lineHeight }}
-            />
-          </div>
-
-          <div className="space-y-12">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative flex flex-col md:flex-row gap-6 md:gap-12"
+        <ol ref={listRef} className="relative">
+          <span aria-hidden className="absolute bottom-6 left-[19px] top-6 w-0.5 bg-border" />
+          <motion.span
+            aria-hidden
+            style={{ scaleY: scrollYProgress }}
+            className="absolute bottom-6 left-[19px] top-6 w-0.5 origin-top bg-brand"
+          />
+          {p.steps.map((step, i) => (
+            <motion.li
+              key={step.title}
+              onViewportEnter={() => setActive(i)}
+              viewport={{ margin: '-45% 0px -45% 0px' }}
+              className="relative grid grid-cols-[40px_1fr] gap-5 pb-14 last:pb-0"
+            >
+              <span
+                className={cn(
+                  'relative z-10 grid size-10 place-items-center rounded-full border-2 text-sm font-bold tabular-nums transition-colors duration-300',
+                  i <= active ? 'border-brand bg-brand text-brand-foreground' : 'border-border bg-background text-muted-foreground'
+                )}
               >
-                <div className="flex-shrink-0 flex items-center md:items-start gap-4 md:w-24">
-                  <div className="w-14 h-14 rounded-full bg-secondary border border-border flex items-center justify-center font-bold text-lg text-foreground relative z-10 md:bg-background">
-                    {step.num}
-                  </div>
-                  <h3 className="text-2xl font-bold md:hidden">{step.title}</h3>
-                </div>
-                
-                <div className="pt-2 md:pt-4">
-                  <h3 className="text-2xl font-bold hidden md:block mb-2">{step.title}</h3>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+                {i + 1}
+              </span>
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className={cn('pt-1 transition-opacity duration-300', i === active ? 'lg:opacity-100' : 'lg:opacity-50')}
+              >
+                <h3 className="text-2xl font-extrabold tracking-tight">{step.title}</h3>
+                <p className="mt-2 max-w-lg leading-relaxed text-muted-foreground">{step.description}</p>
+                <p className="mt-4 inline-flex flex-wrap items-baseline gap-x-2 rounded-lg bg-surface px-4 py-3 text-sm ring-1 ring-border">
+                  <span className="font-semibold text-muted-foreground">{p.deliverableLabel}:</span>
+                  <span className="font-bold">{step.deliverable}</span>
+                </p>
               </motion.div>
-            ))}
-          </div>
-        </div>
+            </motion.li>
+          ))}
+        </ol>
       </Container>
     </section>
   );

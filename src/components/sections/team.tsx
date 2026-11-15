@@ -1,75 +1,81 @@
 'use client';
 
-import * as React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/container';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { TiltCard } from '@/components/motion/hover';
+import { SectionSwarm } from '@/components/motion/section-swarm';
 import { useLanguage } from '@/components/layout/language-provider';
 
 const teamMembers = [
-  { name: 'Hadi', image: '/images/founders/hadi.PNG' },
-  { name: 'Keysha', image: '/images/founders/keysha.PNG' },
-  { name: 'Aris', image: '/images/founders/aris.JPG' },
-  { name: 'Akbar', image: '/images/founders/akbar.png' },
+  { name: 'Hadi', image: '/images/founders/hadi.PNG', w: 1009, h: 1559 },
+  { name: 'Keysha', image: '/images/founders/keysha.PNG', w: 1024, h: 1536 },
+  { name: 'Aris', image: '/images/founders/aris.JPG', w: 662, h: 1024 },
+  { name: 'Akbar', image: '/images/founders/akbar.png', w: 832, h: 1286 },
 ];
+
+// Cards start stacked like a deck on a desk, then deal out into a row.
+const stacked = [
+  { x: '75%', rotate: -10 },
+  { x: '25%', rotate: -3 },
+  { x: '-25%', rotate: 4 },
+  { x: '-75%', rotate: 11 },
+];
+const dealt = [-4, 2, -2, 4];
 
 export function Team() {
   const { t } = useLanguage();
-  return (
-    <section id="team" className="py-24 relative overflow-hidden bg-zinc-950">
-      {/* Cool Background Effects */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/20 via-zinc-950 to-zinc-950" />
-      <div className="absolute left-0 top-0 -z-10 h-full w-full opacity-10 bg-[url('/images/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
-      
-      <Container>
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
+  const tm = t.team;
 
-          
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white"
-          >
-            {t.team.title1} <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent/50">
-              {t.team.title2}
-            </span>
-          </motion.h2>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto"
-          >
-            {t.team.description}
-          </motion.p>
+  return (
+    <section id="team" className="relative isolate overflow-hidden bg-navy py-24 text-white lg:py-32 dark:bg-surface">
+      <SectionSwarm shape="team" accentShare={0.75} className="absolute right-[4%] top-4 -z-10 hidden h-[190px] w-[320px] lg:block" />
+      <Container>
+        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
+          <SectionHeading
+            label={tm.label}
+            title={tm.title}
+            description={tm.description}
+            tone="inverse"
+          />
+          <ul className="grid gap-5 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            {tm.principles.map((pr) => (
+              <li key={pr.title} className="group relative border-t border-white/20 pt-4">
+                <span aria-hidden className="absolute -top-px left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100" />
+                <h3 className="font-bold">{pr.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-white/65">{pr.description}</p>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-          className="flex flex-row items-center justify-center gap-3 sm:gap-6 md:gap-10 lg:gap-12 w-full max-w-6xl mx-auto px-2"
-        >
-          {teamMembers.map((member, idx) => (
-            <div key={member.name} className="relative flex-1 max-w-[280px] aspect-[2/3] transition-all hover:-translate-y-6 duration-500 hover:scale-105 group">
-              {/* Glow effect on hover */}
-              <div className="absolute inset-0 bg-accent/30 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full scale-75" />
-              <Image 
-                src={member.image} 
-                alt={member.name} 
-                fill 
-                sizes="(max-width: 768px) 25vw, 280px" 
-                className="object-contain rounded-xl md:rounded-3xl drop-shadow-2xl relative z-10" 
-              />
-            </div>
+        <div className="mt-16 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
+          {teamMembers.map((m, i) => (
+            <motion.figure
+              key={m.name}
+              initial={{ opacity: 0, y: 80, ...stacked[i] }}
+              whileInView={{ opacity: 1, y: 0, x: 0, rotate: dealt[i] }}
+              whileHover={{ rotate: 0, y: -18, scale: 1.04, zIndex: 10 }}
+              viewport={{ once: true, margin: '-120px' }}
+              transition={{ type: 'spring', stiffness: 90, damping: 16, delay: i * 0.06 }}
+              className="relative"
+            >
+              {/* lanyard clip */}
+              <span aria-hidden className="mx-auto block h-5 w-10 rounded-t-md border-x-2 border-t-2 border-white/30" />
+              <TiltCard className="rounded-lg">
+                <Image
+                  src={m.image}
+                  alt={m.name}
+                  width={m.w}
+                  height={m.h}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="h-auto w-full rounded-lg shadow-[0_24px_40px_-16px_rgba(0,0,0,0.6)] transition-shadow duration-500 group-hover/tilt:shadow-[0_40px_60px_-20px_rgba(0,0,0,0.75)]"
+                />
+              </TiltCard>
+            </motion.figure>
           ))}
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

@@ -1,182 +1,345 @@
 export type Language = 'en' | 'id';
 
-export const translations = {
-  en: {
-    // Navbar
-    nav: {
-      home: 'Home',
-      services: 'Services',
-      projects: 'Projects',
-      process: 'Process',
-      about: 'About',
-      contact: 'Contact',
-      startProject: 'Start a Project',
-    },
-    // Hero
-    hero: {
-      badge: 'From idea to launch — we build, ship, and scale digital products.',
-      title1: 'We Build Digital Products',
-      title2: 'That Matter.',
-      description: 'NexoraLabStudio helps businesses turn ideas into powerful Android apps, iOS apps, websites, and custom digital products.',
-      cta: 'Start a Project',
-      explore: 'Explore Our Work',
-    },
-    // Team
-    team: {
-      badge: 'The Founders',
-      title1: 'The Minds Behind',
-      title2: 'NexoraLabStudio',
-      description: 'We are a collective of engineers, designers, and strategists obsessed with building digital products that push boundaries and redefine industry standards.',
-    },
-    // Services
-    services: {
-      title: 'What We Build',
-      subtitle: 'Digital solutions designed around your business goals.',
-    },
-    // Projects
-    projects: {
-      title: 'Our Work',
-      subtitle: 'A selection of projects we\'ve built with passion and precision.',
-      viewCode: 'View Code',
-      liveDemo: 'Live Demo',
-    },
-    // About
-    about: {
-      title: 'We Turn Ideas Into Digital Products.',
-      p1: 'NexoraLabStudio is a digital product development studio focused on creating modern, scalable and meaningful digital experiences.',
-      p2: 'We help startups, established businesses, organizations, and individuals transform their ideas into functional products that users love and businesses can scale. Our approach combines rigorous engineering with thoughtful design.',
-      cta: 'Learn More About Us',
-    },
-    // CTA
-    cta: {
-      badge: 'Ready to start?',
-      title1: 'Let\'s Build Something',
-      title2: 'Extraordinary Together.',
-      description: 'Have an idea? We\'d love to hear about it. Tell us about your project and let\'s start building something great.',
-      startProject: 'Start Your Project',
-      contact: 'Contact Us',
-    },
-    // Contact
-    contact: {
-      title: 'Get In Touch',
-      subtitle: 'Ready to start your project? Fill out the form below and we\'ll get back to you within 24 hours.',
-      name: 'Full Name',
-      email: 'Email Address',
-      company: 'Company / Organization (Optional)',
-      projectType: 'Project Type',
-      budget: 'Budget Range',
-      description: 'Project Description',
-      send: 'Send Message',
-      sending: 'Sending...',
-      successTitle: 'Message sent!',
-      successBody: 'We\'ll get back to you within 24 hours.',
-      errorTitle: 'Something went wrong.',
-      errorBody: 'Please try again or email us directly.',
-    },
-    // Why Us
-    whyUs: {
-      title: 'Why Choose Us',
-      subtitle: 'We don\'t just deliver products — we deliver results.',
-    },
-    // Process
-    process: {
-      title: 'How We Work',
-      subtitle: 'A proven process that keeps projects on track and stakeholders aligned.',
-    },
-    // Technologies
-    technologies: {
-      title: 'Our Tech Stack',
-      subtitle: 'We use modern, battle-tested technologies to build reliable and scalable products.',
-    },
+const en = {
+  nav: {
+    services: 'Services',
+    work: 'Work',
+    process: 'Process',
+    team: 'Team',
+    faq: 'FAQ',
+    contact: 'Contact',
+    startProject: 'Start a project',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    toggleTheme: 'Toggle theme',
   },
-  id: {
-    // Navbar
-    nav: {
-      home: 'Beranda',
-      services: 'Layanan',
-      projects: 'Proyek',
-      process: 'Proses',
-      about: 'Tentang',
-      contact: 'Kontak',
-      startProject: 'Mulai Proyek',
+  hero: {
+    tagline: 'Coding services · Engineering ideas into innovation',
+    title1: 'Websites & mobile apps,',
+    title2: 'engineered to ship.',
+    description:
+      'We design and build company websites, web apps, and Android & iOS apps — from the first sketch to the version your customers download.',
+    cta: 'Start a project',
+    secondary: 'See our work',
+    points: ['Android & iOS', 'Responsive web', 'Reply within 24 hours'],
+    demoCaption: 'Sample screen. Switch to see one product on both platforms.',
+    toggleWeb: 'Website',
+    toggleMobile: 'Mobile app',
+  },
+  demo: {
+    brand: 'Kopi Senja',
+    url: 'kopisenja.id',
+    nav: ['Menu', 'Outlets', 'Promo'],
+    headline: 'Your usual order, without the queue.',
+    cta: 'Order now',
+    items: [
+      { name: 'Iced latte', price: '28k' },
+      { name: 'Palm sugar', price: '24k' },
+      { name: 'Matcha', price: '30k' },
+    ],
+    tabs: ['Home', 'Menu', 'Orders'],
+  },
+  services: {
+    label: 'Services',
+    title: 'Two things we do every day.',
+    description: 'Most projects start with one of these. Many end up needing both, and we build them to share one backend.',
+    web: {
+      title: 'Website development',
+      description: 'Fast, responsive sites that load quickly on a phone and are easy for your team to update.',
+      features: ['Company profiles & landing pages', 'E-commerce & online booking', 'Admin dashboards & CMS', 'SEO-ready structure'],
+      tags: ['Next.js', 'React', 'Tailwind CSS'],
     },
-    // Hero
-    hero: {
-      badge: 'Dari ide hingga peluncuran — kami bangun, kirim, dan kembangkan produk digital.',
-      title1: 'Kami Membangun Produk Digital',
-      title2: 'Yang Bermakna.',
-      description: 'NexoraLabStudio membantu bisnis mengubah ide menjadi aplikasi Android, iOS, website, dan produk digital khusus yang powerful.',
-      cta: 'Mulai Proyek',
-      explore: 'Lihat Karya Kami',
+    mobile: {
+      title: 'Mobile app development',
+      description: 'Android and iOS apps from one codebase, or native Swift when the product needs it.',
+      features: ['Android & iOS from one codebase', 'Login, payments & push notifications', 'API & third-party integrations', 'Play Store & App Store release'],
+      tags: ['Flutter', 'Swift', 'Firebase'],
     },
-    // Team
-    team: {
-      badge: 'Para Pendiri',
-      title1: 'Otak di Balik',
-      title2: 'NexoraLabStudio',
-      description: 'Kami adalah kumpulan engineer, desainer, dan strategis yang terobsesi membangun produk digital yang melampaui batas dan mendefinisikan ulang standar industri.',
+    otherTitle: 'We also take on',
+    others: [
+      { title: 'Web applications', description: 'SaaS products, internal tools and admin panels shaped around how your team works.' },
+      { title: 'UI/UX design', description: 'User flows, wireframes and clickable prototypes before a line of code is written.' },
+      { title: 'Custom software', description: 'Automation, integrations and migrations off legacy systems.' },
+    ],
+  },
+  work: {
+    label: 'Work',
+    title: 'Things we have shipped.',
+    description: 'A few projects from our repositories. Open any of them to read the code.',
+    viewCode: 'View code',
+    categories: { mobile: 'Mobile app', web: 'Web app', ios: 'iOS app' },
+  },
+  process: {
+    label: 'Process',
+    title: 'From idea to launch, in five steps.',
+    description: 'You see the product at every step, so there are no surprises at the end.',
+    deliverableLabel: 'You get',
+    steps: [
+      { title: 'Discover', description: 'We learn your business, your users and what success looks like before writing any code.', deliverable: 'Scope, timeline and a written quote' },
+      { title: 'Design', description: 'User flows, wireframes and high-fidelity screens you can click through.', deliverable: 'A clickable prototype' },
+      { title: 'Develop', description: 'We build with modern, proven technology and clean, scalable architecture.', deliverable: 'A staging link to follow progress' },
+      { title: 'Test', description: 'Functionality, performance and layout, checked across devices and screen sizes.', deliverable: 'A tested release candidate' },
+      { title: 'Launch', description: 'We deploy, publish to the stores, and stay on for support afterwards.', deliverable: 'A live product and ongoing support' },
+    ],
+  },
+  team: {
+    label: 'Team',
+    title: 'The people writing your code.',
+    description: 'A small team of engineers and designers. You talk directly to the people building your product.',
+    principles: [
+      { title: 'Built around your goals', description: 'We understand the problem first, then pick the solution.' },
+      { title: 'Transparent process', description: 'You always know what we are building and when.' },
+      { title: 'Long-term partner', description: 'We keep supporting and improving the product after launch.' },
+    ],
+  },
+  stack: {
+    label: 'Tech stack',
+    title: 'Proven tools, chosen per project.',
+    groups: [
+      { name: 'Web', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+      { name: 'Mobile', items: ['Flutter', 'Dart', 'Swift'] },
+      { name: 'Backend & cloud', items: ['Node.js', 'PostgreSQL', 'Supabase', 'Firebase', 'GraphQL', 'Docker', 'AWS'] },
+      { name: 'Design', items: ['Figma'] },
+    ],
+  },
+  faq: {
+    label: 'FAQ',
+    title: 'Questions we hear often.',
+    items: [
+      { q: 'What do I need to prepare before we start?', a: 'An idea and a goal are enough. In the discovery call we help you turn them into a feature list, a scope and a timeline.' },
+      { q: 'How long does a project take?', a: 'It depends on the scope. You get a timeline estimate after discovery, before any development starts, and you can follow progress on a staging link.' },
+      { q: 'How much does it cost?', a: 'Price follows the features and platforms you need. After the consultation we send a written quote, and the form below lets you share your budget range up front.' },
+      { q: 'Can you build the website and the mobile app together?', a: 'Yes. We design them to share one backend and API, so your data stays in one place across web, Android and iOS.' },
+      { q: 'What happens after launch?', a: 'We can keep supporting, maintaining and improving the product for as long as you need us.' },
+    ],
+  },
+  contact: {
+    label: 'Contact',
+    title: 'Tell us what you want to build.',
+    subtitle: "Fill in the form and we'll get back to you within 24 hours.",
+    emailLabel: 'Prefer email?',
+    nextTitle: 'What happens next',
+    next: ['We read your brief and reply within 24 hours.', 'A short call to understand the goals.', 'You receive a scope, timeline and quote.'],
+    name: 'Full name',
+    namePlaceholder: 'Your name',
+    email: 'Email address',
+    emailPlaceholder: 'email@example.com',
+    company: 'Company / organization (optional)',
+    companyPlaceholder: 'Company name',
+    projectType: 'Project type',
+    projectTypePlaceholder: 'Select a project type',
+    budget: 'Budget range',
+    budgetPlaceholder: 'Select a budget range',
+    description: 'Project description',
+    descriptionPlaceholder: 'What are you building, who is it for, and when do you need it?',
+    projectTypes: {
+      'Android App': 'Android app',
+      'iOS App': 'iOS app',
+      Website: 'Website',
+      'Web Application': 'Web application',
+      'UI/UX Design': 'UI/UX design',
+      'Custom Software': 'Custom software',
+      Other: 'Other',
     },
-    // Services
-    services: {
-      title: 'Apa yang Kami Bangun',
-      subtitle: 'Solusi digital yang dirancang sesuai tujuan bisnis Anda.',
+    budgets: {
+      'Under $500': 'Under $500',
+      '$500 – $1,000': '$500 – $1,000',
+      '$1,000 – $5,000': '$1,000 – $5,000',
+      '$5,000+': '$5,000+',
+      'Not sure yet': 'Not sure yet',
     },
-    // Projects
-    projects: {
-      title: 'Karya Kami',
-      subtitle: 'Pilihan proyek yang kami bangun dengan penuh semangat dan presisi.',
-      viewCode: 'Lihat Kode',
-      liveDemo: 'Demo Langsung',
+    errors: {
+      name: 'Please enter at least 2 characters.',
+      email: 'Please enter a valid email address.',
+      projectType: 'Please select a project type.',
+      budget: 'Please select a budget range.',
+      description: 'Please describe the project in at least 10 characters.',
     },
-    // About
-    about: {
-      title: 'Kami Mengubah Ide Menjadi Produk Digital.',
-      p1: 'NexoraLabStudio adalah studio pengembangan produk digital yang fokus menciptakan pengalaman digital modern, skalabel, dan bermakna.',
-      p2: 'Kami membantu startup, bisnis mapan, organisasi, dan individu mentransformasi ide mereka menjadi produk fungsional yang dicintai pengguna dan dapat dikembangkan bisnis. Pendekatan kami menggabungkan rekayasa yang ketat dengan desain yang penuh pemikiran.',
-      cta: 'Pelajari Lebih Lanjut',
-    },
-    // CTA
-    cta: {
-      badge: 'Siap memulai?',
-      title1: 'Mari Bangun Sesuatu yang',
-      title2: 'Luar Biasa Bersama.',
-      description: 'Punya ide? Kami ingin mendengarnya. Ceritakan tentang proyekmu dan mari kita mulai membangun sesuatu yang hebat.',
-      startProject: 'Mulai Proyek Anda',
-      contact: 'Hubungi Kami',
-    },
-    // Contact
-    contact: {
-      title: 'Hubungi Kami',
-      subtitle: 'Siap memulai proyekmu? Isi form di bawah dan kami akan merespons dalam 24 jam.',
-      name: 'Nama Lengkap',
-      email: 'Alamat Email',
-      company: 'Perusahaan / Organisasi (Opsional)',
-      projectType: 'Jenis Proyek',
-      budget: 'Kisaran Anggaran',
-      description: 'Deskripsi Proyek',
-      send: 'Kirim Pesan',
-      sending: 'Mengirim...',
-      successTitle: 'Pesan terkirim!',
-      successBody: 'Kami akan merespons dalam 24 jam.',
-      errorTitle: 'Terjadi kesalahan.',
-      errorBody: 'Silakan coba lagi atau email kami langsung.',
-    },
-    // Why Us
-    whyUs: {
-      title: 'Mengapa Memilih Kami',
-      subtitle: 'Kami tidak hanya mengirimkan produk — kami mengirimkan hasil.',
-    },
-    // Process
-    process: {
-      title: 'Cara Kami Bekerja',
-      subtitle: 'Proses yang terbukti menjaga proyek tetap di jalurnya dan pemangku kepentingan tetap selaras.',
-    },
-    // Technologies
-    technologies: {
-      title: 'Teknologi Kami',
-      subtitle: 'Kami menggunakan teknologi modern dan teruji untuk membangun produk yang andal dan skalabel.',
-    },
+    send: 'Send project inquiry',
+    sending: 'Sending...',
+    successTitle: 'Message sent.',
+    successBody: "We'll get back to you within 24 hours.",
+    sendAnother: 'Send another message',
+    errorTitle: 'Your message was not sent.',
+    errorBody: 'Please try again, or email us directly at',
+  },
+  footer: {
+    tagline: 'Engineering ideas into innovation.',
+    rights: 'All rights reserved.',
   },
 };
 
-export type Translations = typeof translations.en;
+export type Translations = typeof en;
+
+const id: Translations = {
+  nav: {
+    services: 'Layanan',
+    work: 'Karya',
+    process: 'Proses',
+    team: 'Tim',
+    faq: 'FAQ',
+    contact: 'Kontak',
+    startProject: 'Mulai proyek',
+    openMenu: 'Buka menu',
+    closeMenu: 'Tutup menu',
+    toggleTheme: 'Ganti tema',
+  },
+  hero: {
+    tagline: 'Jasa coding · Engineering ideas into innovation',
+    title1: 'Website & aplikasi mobile,',
+    title2: 'dibangun sampai rilis.',
+    description:
+      'Kami merancang dan membangun website perusahaan, aplikasi web, serta aplikasi Android & iOS — dari sketsa pertama sampai versi yang diunduh pelangganmu.',
+    cta: 'Mulai proyek',
+    secondary: 'Lihat karya kami',
+    points: ['Android & iOS', 'Web responsif', 'Balasan dalam 24 jam'],
+    demoCaption: 'Contoh tampilan. Ganti tab untuk melihat satu produk di dua platform.',
+    toggleWeb: 'Website',
+    toggleMobile: 'Aplikasi mobile',
+  },
+  demo: {
+    brand: 'Kopi Senja',
+    url: 'kopisenja.id',
+    nav: ['Menu', 'Outlet', 'Promo'],
+    headline: 'Pesanan favoritmu, tanpa antre.',
+    cta: 'Pesan sekarang',
+    items: [
+      { name: 'Es kopi susu', price: '28rb' },
+      { name: 'Gula aren', price: '24rb' },
+      { name: 'Matcha', price: '30rb' },
+    ],
+    tabs: ['Beranda', 'Menu', 'Pesanan'],
+  },
+  services: {
+    label: 'Layanan',
+    title: 'Dua hal yang kami kerjakan setiap hari.',
+    description: 'Kebanyakan proyek dimulai dari salah satunya. Banyak yang akhirnya butuh keduanya, dan kami membangunnya dengan satu backend yang sama.',
+    web: {
+      title: 'Pembuatan website',
+      description: 'Website cepat dan responsif yang ringan dibuka di HP dan mudah diperbarui oleh timmu.',
+      features: ['Company profile & landing page', 'Toko online & booking', 'Dashboard admin & CMS', 'Struktur siap SEO'],
+      tags: ['Next.js', 'React', 'Tailwind CSS'],
+    },
+    mobile: {
+      title: 'Pembuatan aplikasi mobile',
+      description: 'Aplikasi Android dan iOS dari satu codebase, atau native Swift saat produknya membutuhkan.',
+      features: ['Android & iOS dari satu codebase', 'Login, pembayaran & push notification', 'Integrasi API & pihak ketiga', 'Rilis ke Play Store & App Store'],
+      tags: ['Flutter', 'Swift', 'Firebase'],
+    },
+    otherTitle: 'Kami juga mengerjakan',
+    others: [
+      { title: 'Aplikasi web', description: 'Produk SaaS, tools internal, dan panel admin yang mengikuti alur kerja timmu.' },
+      { title: 'Desain UI/UX', description: 'User flow, wireframe, dan prototipe yang bisa diklik sebelum mulai coding.' },
+      { title: 'Software kustom', description: 'Otomasi, integrasi, dan migrasi dari sistem lama.' },
+    ],
+  },
+  work: {
+    label: 'Karya',
+    title: 'Yang sudah kami rilis.',
+    description: 'Beberapa proyek dari repositori kami. Buka salah satunya untuk membaca kodenya.',
+    viewCode: 'Lihat kode',
+    categories: { mobile: 'Aplikasi mobile', web: 'Aplikasi web', ios: 'Aplikasi iOS' },
+  },
+  process: {
+    label: 'Proses',
+    title: 'Dari ide sampai rilis, dalam lima langkah.',
+    description: 'Kamu melihat produknya di setiap langkah, jadi tidak ada kejutan di akhir.',
+    deliverableLabel: 'Kamu dapat',
+    steps: [
+      { title: 'Discover', description: 'Kami memahami bisnismu, penggunamu, dan target keberhasilannya sebelum menulis kode.', deliverable: 'Scope, timeline, dan penawaran tertulis' },
+      { title: 'Design', description: 'User flow, wireframe, dan tampilan high-fidelity yang bisa kamu coba.', deliverable: 'Prototipe yang bisa diklik' },
+      { title: 'Develop', description: 'Kami membangun dengan teknologi modern yang teruji dan arsitektur yang rapi serta skalabel.', deliverable: 'Link staging untuk memantau progres' },
+      { title: 'Test', description: 'Fungsi, performa, dan tampilan dicek di berbagai perangkat dan ukuran layar.', deliverable: 'Versi rilis yang sudah dites' },
+      { title: 'Launch', description: 'Kami deploy, publikasi ke store, dan tetap mendampingi setelahnya.', deliverable: 'Produk live dan dukungan berkelanjutan' },
+    ],
+  },
+  team: {
+    label: 'Tim',
+    title: 'Orang-orang yang menulis kodemu.',
+    description: 'Tim kecil berisi engineer dan desainer. Kamu bicara langsung dengan orang yang membangun produkmu.',
+    principles: [
+      { title: 'Fokus pada tujuanmu', description: 'Kami pahami masalahnya dulu, baru memilih solusinya.' },
+      { title: 'Proses transparan', description: 'Kamu selalu tahu apa yang sedang kami bangun dan kapan selesai.' },
+      { title: 'Partner jangka panjang', description: 'Kami tetap mendukung dan mengembangkan produk setelah rilis.' },
+    ],
+  },
+  stack: {
+    label: 'Teknologi',
+    title: 'Tools teruji, dipilih sesuai proyek.',
+    groups: [
+      { name: 'Web', items: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'] },
+      { name: 'Mobile', items: ['Flutter', 'Dart', 'Swift'] },
+      { name: 'Backend & cloud', items: ['Node.js', 'PostgreSQL', 'Supabase', 'Firebase', 'GraphQL', 'Docker', 'AWS'] },
+      { name: 'Desain', items: ['Figma'] },
+    ],
+  },
+  faq: {
+    label: 'FAQ',
+    title: 'Pertanyaan yang sering kami terima.',
+    items: [
+      { q: 'Apa yang perlu saya siapkan sebelum mulai?', a: 'Cukup ide dan tujuannya. Saat sesi discovery kami bantu mengubahnya menjadi daftar fitur, scope, dan timeline.' },
+      { q: 'Berapa lama pengerjaannya?', a: 'Tergantung scope. Kamu menerima estimasi timeline setelah discovery, sebelum development dimulai, dan bisa memantau progres lewat link staging.' },
+      { q: 'Berapa biayanya?', a: 'Harga mengikuti fitur dan platform yang dibutuhkan. Setelah konsultasi kami kirim penawaran tertulis, dan di form bawah kamu bisa menyebutkan kisaran anggaranmu.' },
+      { q: 'Bisa buat website dan aplikasi mobile sekaligus?', a: 'Bisa. Kami merancangnya memakai satu backend dan API yang sama, jadi datamu tetap di satu tempat untuk web, Android, dan iOS.' },
+      { q: 'Bagaimana setelah rilis?', a: 'Kami bisa terus mendukung, merawat, dan mengembangkan produkmu selama kamu membutuhkan.' },
+    ],
+  },
+  contact: {
+    label: 'Kontak',
+    title: 'Ceritakan apa yang ingin kamu bangun.',
+    subtitle: 'Isi form berikut dan kami akan membalas dalam 24 jam.',
+    emailLabel: 'Lebih suka email?',
+    nextTitle: 'Setelah ini',
+    next: ['Kami baca brief-mu dan membalas dalam 24 jam.', 'Panggilan singkat untuk memahami tujuannya.', 'Kamu menerima scope, timeline, dan penawaran harga.'],
+    name: 'Nama lengkap',
+    namePlaceholder: 'Nama kamu',
+    email: 'Alamat email',
+    emailPlaceholder: 'email@contoh.com',
+    company: 'Perusahaan / organisasi (opsional)',
+    companyPlaceholder: 'Nama perusahaan',
+    projectType: 'Jenis proyek',
+    projectTypePlaceholder: 'Pilih jenis proyek',
+    budget: 'Kisaran anggaran',
+    budgetPlaceholder: 'Pilih kisaran anggaran',
+    description: 'Deskripsi proyek',
+    descriptionPlaceholder: 'Apa yang ingin dibangun, untuk siapa, dan kapan dibutuhkan?',
+    projectTypes: {
+      'Android App': 'Aplikasi Android',
+      'iOS App': 'Aplikasi iOS',
+      Website: 'Website',
+      'Web Application': 'Aplikasi web',
+      'UI/UX Design': 'Desain UI/UX',
+      'Custom Software': 'Software kustom',
+      Other: 'Lainnya',
+    },
+    budgets: {
+      'Under $500': 'Di bawah $500',
+      '$500 – $1,000': '$500 – $1.000',
+      '$1,000 – $5,000': '$1.000 – $5.000',
+      '$5,000+': '$5.000+',
+      'Not sure yet': 'Belum tahu',
+    },
+    errors: {
+      name: 'Isi minimal 2 karakter.',
+      email: 'Masukkan alamat email yang valid.',
+      projectType: 'Pilih jenis proyek.',
+      budget: 'Pilih kisaran anggaran.',
+      description: 'Jelaskan proyekmu minimal 10 karakter.',
+    },
+    send: 'Kirim permintaan proyek',
+    sending: 'Mengirim...',
+    successTitle: 'Pesan terkirim.',
+    successBody: 'Kami akan membalas dalam 24 jam.',
+    sendAnother: 'Kirim pesan lain',
+    errorTitle: 'Pesanmu belum terkirim.',
+    errorBody: 'Coba lagi, atau email kami langsung di',
+  },
+  footer: {
+    tagline: 'Engineering ideas into innovation.',
+    rights: 'Hak cipta dilindungi.',
+  },
+};
+
+export const translations: Record<Language, Translations> = { en, id };
+
+export const CONTACT_EMAIL = 'hello@nexoralabstudio.com';

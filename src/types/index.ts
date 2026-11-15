@@ -1,18 +1,13 @@
-// Types for NexoraLabStudio
+import type { Language } from '@/lib/translations';
+
+export type ProjectCategory = 'mobile' | 'web' | 'ios';
 
 export interface Project {
   id: string;
   name: string;
-  category: string;
-  description: string;
+  category: ProjectCategory;
+  description: Record<Language, string>;
   technologies: string[];
   image: string;
   link: string;
-}
-
-export interface Service {
-  title: string;
-  icon: React.ElementType; // Lucide icon component
-  description: string;
-  features: string[];
 }
