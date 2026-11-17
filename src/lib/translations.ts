@@ -342,4 +342,4 @@ const id: Translations = {
 
 export const translations: Record<Language, Translations> = { en, id };
 
-export const CONTACT_EMAIL = 'hello@nexoralabstudio.com';
+export const CONTACT_EMAIL = 'hadsxdev@icloud.com';
