@@ -10,19 +10,17 @@ import { useLanguage } from '@/components/layout/language-provider';
 
 const teamMembers = [
   { name: 'Hadi', image: '/images/founders/hadi.PNG', w: 1009, h: 1559 },
-  { name: 'Keysha', image: '/images/founders/keysha.PNG', w: 1024, h: 1536 },
   { name: 'Aris', image: '/images/founders/aris.JPG', w: 662, h: 1024 },
   { name: 'Akbar', image: '/images/founders/akbar.png', w: 832, h: 1286 },
 ];
 
 // Cards start stacked like a deck on a desk, then deal out into a row.
 const stacked = [
-  { x: '75%', rotate: -10 },
-  { x: '25%', rotate: -3 },
-  { x: '-25%', rotate: 4 },
-  { x: '-75%', rotate: 11 },
+  { x: '100%', rotate: -9 },
+  { x: '0%', rotate: 2 },
+  { x: '-100%', rotate: 10 },
 ];
-const dealt = [-4, 2, -2, 4];
+const dealt = [-4, 2, -3];
 
 export function Team() {
   const { t } = useLanguage();
@@ -50,7 +48,7 @@ export function Team() {
           </ul>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
+        <div className="mx-auto mt-16 flex max-w-5xl flex-wrap justify-center gap-4 sm:gap-8">
           {teamMembers.map((m, i) => (
             <motion.figure
               key={m.name}
@@ -59,7 +57,7 @@ export function Team() {
               whileHover={{ rotate: 0, y: -18, scale: 1.04, zIndex: 10 }}
               viewport={{ once: true, margin: '-120px' }}
               transition={{ type: 'spring', stiffness: 90, damping: 16, delay: i * 0.06 }}
-              className="relative"
+              className="relative w-[calc(50%-0.5rem)] max-w-[300px] md:w-[calc(33.333%-1.5rem)]"
             >
               {/* lanyard clip */}
               <span aria-hidden className="mx-auto block h-5 w-10 rounded-t-md border-x-2 border-t-2 border-white/30" />
@@ -69,7 +67,7 @@ export function Team() {
                   alt={m.name}
                   width={m.w}
                   height={m.h}
-                  sizes="(max-width: 768px) 50vw, 25vw"
+                  sizes="(max-width: 768px) 50vw, 300px"
                   className="h-auto w-full rounded-lg shadow-[0_24px_40px_-16px_rgba(0,0,0,0.6)] transition-shadow duration-500 group-hover/tilt:shadow-[0_40px_60px_-20px_rgba(0,0,0,0.75)]"
                 />
               </TiltCard>
